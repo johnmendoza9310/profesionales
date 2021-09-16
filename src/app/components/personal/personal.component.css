@@ -1,0 +1,28 @@
+body{
+    font-family: 8px;
+}
+
+
+
+label {
+    display: block;
+    font: 1rem 'Fira Sans', sans-serif;
+}
+
+input,label {
+    margin: .4rem 0;
+}
+
+
+#box{
+    width: 11rem;
+    margin-right: 1rem;
+    color: rgb(139, 139, 139);
+
+}
+
+.type, .items{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}

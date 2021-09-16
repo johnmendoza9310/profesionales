@@ -1,0 +1,230 @@
+<div *ngIf="hidden===true">
+  <router-outlet></router-outlet>
+  <button type="button" class="btn btn-info" 
+  [routerLink]="['personal']"
+  (click)="hide(false)">Volver</button>
+</div>
+
+
+
+
+<body *ngIf="hidden===false">
+    
+
+<form autocomplete="off" [formGroup]="forma" (ngSubmit)="save()">
+
+
+    <h1>PERSONAL PROFESIONAL</h1>
+    <div class="container">
+        <h3>LISTADO DE PERSONAL CREADO</h3>
+        <table class="table table-fixed">
+          <thead>
+            <tr>
+                <th class="col-xs-3">Opciones</th>
+              <th class="col-xs-3">Nombres</th>
+              <th class="col-xs-3">Apellidos</th>
+              <th class="col-xs-3">Cedula</th>
+              <th class="col-xs-6">Fecha Nacimiento</th>
+              <th class="col-xs-6">Profesión</th>
+              <th class="col-xs-6">No. Celular</th>
+              <th class="col-xs-6">No. Fijo</th>
+              <th class="col-xs-6">Municipio</th>
+              <th class="col-xs-6">Género</th>
+              <th class="col-xs-6">Vehiculo</th>
+              <th class="col-xs-6">Marca</th>
+              
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let profesional of profesional">
+                <td><div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                    <button type="button" class="btn btn-danger" (click)="delete(profesional.id)">Borrar</button>
+                    <button type="button" class="btn btn-success"  [routerLink]="['editar', profesional.id]"
+                    (click)="hide(true)">Actualizar</button>
+                  </div></td>
+              <td class="col-xs-3">{{profesional.first_name +" "+profesional.second_name}}</td>
+              <td class="col-xs-3">{{profesional.first_lastname +" "+profesional.second_lastname}}</td>
+              <td class="col-xs-3">{{profesional.document_number}}</td>
+              <td class="col-xs-6">{{profesional.birth}}</td>
+              <td class="col-xs-6">{{profesional.career}}</td>
+              <td class="col-xs-6">{{profesional.celphone}}</td>
+              <td class="col-xs-6">{{profesional.telephone}}</td>
+              <td class="col-xs-6">{{profesional.municipality}}</td>
+              <td class="col-xs-6">{{profesional.gender}}</td>
+              <td class="col-xs-6">{{profesional.vehicle.name}}</td>
+              <td class="col-xs-6">{{profesional.vehicle.brand}}</td>
+
+       
+
+              
+            </tr>    
+          </tbody>
+        </table>
+      </div>
+
+
+<H3>CREAR NUEVO</H3>
+
+
+<div class="type">
+
+<div class="input-group mb-3" id="box">
+    <input 
+        formControlName="first_name"
+        type="text" class="form-control" 
+        placeholder="Primer Nombre" 
+        aria-label="Username" 
+        aria-describedby="basic-addon1" >
+  </div>
+
+  <div class="input-group mb-3" id="box">
+    <input 
+        formControlName="second_name"
+        type="text" class="form-control" 
+        placeholder="Segundo Nombre" 
+        aria-label="Username" aria-describedby="basic-addon1" >
+  </div>
+
+  <div class="input-group mb-3" id="box">
+    <input 
+        formControlName="first_lastname"
+        type="text" 
+        class="form-control" 
+        placeholder="Primer Apellido" 
+        aria-label="Username" 
+        aria-describedby="basic-addon1" >
+  </div>
+
+
+
+  <div class="input-group mb-3" id="box">
+    <input 
+        formControlName="second_lastname"
+        type="text" 
+        class="form-control" 
+        placeholder="Segundo Apellido" 
+        aria-label="Username" 
+        aria-describedby="basic-addon1" >
+  </div>
+
+
+  <div class="input-group mb-3" id="box">
+    <input 
+        formControlName="document_number"
+        type="text" 
+        class="form-control" 
+        placeholder="Cedula" 
+        aria-label="Username" 
+        aria-describedby="basic-addon1" >
+  </div>
+
+  <div class="input-group mb-3" id="box">
+    <input 
+        formControlName="career"
+        type="text" 
+        class="form-control" 
+        placeholder="Profesion" 
+        aria-label="Username" 
+        aria-describedby="basic-addon1" >
+  </div>
+
+
+  <div class="input-group mb-3" id="box">
+    <input 
+        formControlName="celphone"
+        type="text" 
+        class="form-control" 
+        placeholder="No. Celular" 
+        aria-label="Username" 
+        aria-describedby="basic-addon1" >
+  </div>
+
+  <div class="input-group mb-3" id="box">
+    <input 
+        formControlName="telephone"
+        type="text" 
+        class="form-control" 
+        placeholder="No. Fijo" 
+        aria-label="Username" 
+        aria-describedby="basic-addon1" >
+  </div>
+
+
+
+  <div >
+    <small>Municipio</small>
+
+    <select formControlName="municipality" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" id="box"  >
+        <option [value]="item.vehicle.name" *ngFor="let item of profesional"  >{{item.municipality}}</option>
+      </select>
+    </div>
+
+
+
+  <div >
+    <small>Genero</small>
+
+    <select formControlName="gender" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" id="box"  >
+        <option [value]="item.vehicle.name" *ngFor="let item of profesional"  >{{item.gender}}</option>
+      </select>
+    </div>
+
+
+  <div class="form row mt-3" formGroupName="vehicle" class="items">
+
+
+    <div >
+    <small>Vehiculo</small>
+
+    <select formControlName="name" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" id="box"  >
+        <option [value]="item.vehicle.name" *ngFor="let item of profesional"  >{{item.vehicle.name}}</option>
+      </select>
+    </div>
+
+
+    <div >
+        <small>Marca</small>
+      <select formControlName="brand" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" id="box" >
+        <option [value]="item.vehicle.brand" *ngFor="let item of profesional">{{item.vehicle.brand}}</option>
+      </select>
+
+    </div>
+  </div>
+
+
+
+ 
+
+
+</div>
+
+
+ <label for="start">Fecha de nacimiento</label >
+
+<input formControlName="birth"
+type="date" id="start" name="trip-start"
+       value="2018-07-22"
+       min="1900-01-01" max="2018-12-31"
+       >
+
+
+
+
+
+       <div class="form-group row mt-3">
+        <label class="col-2 col-form-label">&nbsp;</label>
+        <div class="col">
+          <button type="submit" class="btn btn-outline-primary btn-block" style="width: 100%;" >
+            Guardar
+          </button>
+        </div>
+      </div>
+
+       
+
+       </form>
+
+
+
+    </body>
+
