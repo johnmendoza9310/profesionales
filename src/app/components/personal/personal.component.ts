@@ -85,6 +85,8 @@ console.log("Datos",this.forma);
 
 this.personalService.createProfesional(this.forma.value)
 .subscribe( resp=>{
+
+  this.getProfesionals();
   console.log(resp);
   
 })
@@ -96,11 +98,11 @@ this.personalService.createProfesional(this.forma.value)
   delete(id){
     this.personalService.deleteProfesional(id)
     .subscribe(resp=>{
+
+      this.getProfesionals();
       console.log("resp");
       
     })
-
-    this.getProfesionals();
     
 
   }

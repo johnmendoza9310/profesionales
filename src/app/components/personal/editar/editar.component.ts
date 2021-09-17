@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PersonalService } from "../../../services/personal.service";
 import { ActivatedRoute } from '@angular/router';
+import { PersonalComponent } from "./../personal.component";
 
 @Component({
   selector: 'app-editar',
@@ -23,7 +24,8 @@ export class EditarComponent implements OnInit {
 
   constructor( private fb: FormBuilder, 
                private personalService:PersonalService,
-               private route:ActivatedRoute) {
+               private route:ActivatedRoute,
+               private personalComponent:PersonalComponent) {
 
 
                 this.idProfesional = this.route.snapshot.paramMap.get("id");
@@ -120,6 +122,8 @@ console.log("Datos",this.forma);
 this.personalService.updateProfesional(this.forma.value,this.idProfesional)
 .subscribe( resp=>{
   console.log(resp);
+
+  this.personalComponent.ngOnInit();
   
 })
 
