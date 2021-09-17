@@ -3,6 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PersonalService } from "../../../services/personal.service";
 import { ActivatedRoute } from '@angular/router';
 import { PersonalComponent } from "./../personal.component";
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-editar',
@@ -31,8 +32,10 @@ export class EditarComponent implements OnInit {
                 this.idProfesional = this.route.snapshot.paramMap.get("id");
 
                 this.createForm();
+                
                 this.getProfesionals();
                 this.getProfesional();
+                
         
 
     this.idProfesional = this.route.snapshot.paramMap.get("id");
@@ -59,14 +62,14 @@ export class EditarComponent implements OnInit {
       municipality  : ['',   [Validators.required]  ],
       gender : ['',   [Validators.required] ],
       career : ['',   [Validators.required, Validators.minLength(1)]  ],
-      first_name  : ['',   [Validators.required, Validators.minLength(3)]  ],
-      second_name  : ['',   [Validators.required, Validators.minLength(3)]  ],
-      first_lastname  : ['',   [Validators.required, Validators.minLength(3)]  ],
-      second_lastname  : ['',   [Validators.required, Validators.minLength(3)]  ],
-      document_number  : ['',   [Validators.required, Validators.minLength(3)]  ],
+      first_name  : ['',   [Validators.required, Validators.minLength(1)]  ],
+      second_name  : ['',   [Validators.required, Validators.minLength(1)]  ],
+      first_lastname  : ['',   [Validators.required, Validators.minLength(1)]  ],
+      second_lastname  : ['',   [Validators.required, Validators.minLength(1)]  ],
+      document_number  : ['',   [Validators.required, Validators.minLength(1)]  ],
       birth  : ['',   [Validators.required]  ],
-      celphone  : ['',   [Validators.required, Validators.minLength(5)]  ],
-      telephone  : ['',   [Validators.required, Validators.minLength(5)]  ],
+      celphone  : ['',   [Validators.required, Validators.minLength(1)]  ],
+      telephone  : ['',   [Validators.required, Validators.minLength(1)]  ],
 
       vehicle: this.fb.group({
         name:['',Validators.required],
@@ -88,9 +91,11 @@ export class EditarComponent implements OnInit {
     console.log("imprimiendo id", this.idProfesional);
     
     this.personalService.getOneprofesional(this.idProfesional)
-    .subscribe ( resp=>{
-      console.log("uno",resp);
-      this.profesional=resp;
+    .subscribe ( (resp:any)=>{
+      this.profesional=resp.data;
+      this.cargarData();
+      console.log("un profesional",resp.data);
+      
       
       
       
@@ -116,7 +121,45 @@ getProfesionals(){
 
  save(){
 
-console.log("Datos",this.forma);
+
+
+
+  if (this.forma.invalid) {
+
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Faltan Campos por llenar',
+    })
+
+    console.log("formulario invalido");
+    
+
+    return Object.values(this.forma.controls).forEach(
+      control=>{
+
+        if (control instanceof FormGroup) {
+          Object.values(control.controls).forEach(  control=>{ control.markAllAsTouched()})
+          
+        }else{
+          control.markAsTouched();
+        }
+      }
+    )
+    
+  }
+
+
+
+
+
+Swal.fire({
+  title: 'Espere',
+  text: 'Actualizando datos',
+  icon: 'info',
+  allowOutsideClick: false
+});
+Swal.showLoading();
 
 
 this.personalService.updateProfesional(this.forma.value,this.idProfesional)
@@ -124,10 +167,55 @@ this.personalService.updateProfesional(this.forma.value,this.idProfesional)
   console.log(resp);
 
   this.personalComponent.ngOnInit();
+
+
+
+  if (resp) {
+    Swal.fire(
+      'Acción Correcta',
+      'La información ha sido actualizada',
+      'success'
+    );
+  
+  
+    }
   
 })
 
 
+
+
+
+
+
+  }
+
+
+
+
+
+  cargarData(){
+
+  
+    
+
+
+    this.forma.reset({
+
+      _method: "PUT",
+      career : "Digitar carrera",
+      first_name  : this.profesional.first_name,
+      second_name  : this.profesional.second_name,
+      first_lastname  : this.profesional.first_lastname,
+      second_lastname  : this.profesional.second_lastname,
+      document_number  : this.profesional.document_number,
+      celphone  : this.profesional.celphone,
+      telephone  : this.profesional.telephone,
+      birth: this.profesional.birth
+
+   
+
+    })
   }
 
 

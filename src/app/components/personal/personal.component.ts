@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PersonalService } from "../../services/personal.service";
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -80,6 +81,40 @@ export class PersonalComponent implements OnInit {
 
  save(){
 
+  if (this.forma.invalid) {
+
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Faltan Campos por llenar',
+    })
+
+    console.log("formulario invalido");
+    
+
+    return Object.values(this.forma.controls).forEach(
+      control=>{
+
+        if (control instanceof FormGroup) {
+          Object.values(control.controls).forEach(  control=>{ control.markAllAsTouched()})
+          
+        }else{
+          control.markAsTouched();
+        }
+      }
+    )
+    
+  }
+
+
+  Swal.fire({
+    title: 'Espere',
+    text: 'Guardando datos',
+    icon: 'info',
+    allowOutsideClick: false
+  });
+  Swal.showLoading();
+
 console.log("Datos",this.forma);
 
 
@@ -88,6 +123,17 @@ this.personalService.createProfesional(this.forma.value)
 
   this.getProfesionals();
   console.log(resp);
+
+
+  if (resp) {
+    Swal.fire(
+      'Acción Correcta',
+      'La información ha sido Almacenada',
+      'success'
+    );
+  
+  
+    }
   
 })
 
