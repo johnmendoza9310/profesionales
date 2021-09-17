@@ -1,3 +1,7 @@
+# Plugins a instalar
+Se debe instalar SeetAlert2 ejecutando "npm install sweetalert2"
+
+
 # PersonalProfesional
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.0.2.
